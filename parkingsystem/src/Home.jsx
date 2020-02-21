@@ -5,25 +5,26 @@ const headers = { withCredentials: true };
 
 class Home extends Component {
   state = {
-    name: ""
+    login_nick: "",
+    canStyle: "inline-block",
+    cantStyle: "none"
   };
+
   memberInsert = () => {
     const send_param = {
       headers,
-      name: this.nameE.value,
-      email: this.emailE_Contact.value,
-      pw: this.pwE_Contact.value,
-      comments: this.commentsE.value
+      number: this.numberE.value,
+      size: this.sizeE.value
     };
     axios
       .post("http://localhost:8080/member/insert", send_param)
       .then(returnData => {
         if (returnData.data.message) {
           this.setState({
-            name: returnData.data.message
+            number: returnData.data.message
           });
         } else {
-          alert("회원가입오류");
+          alert("오류");
         }
         console.log(returnData.data.message);
       })
@@ -31,7 +32,15 @@ class Home extends Component {
         console.log(err);
       });
   };
+
   render() {
+    const canStyle = {
+      display: this.state.canStyle
+    };
+    const cantStyle = {
+      display: this.state.cantStyle
+    };
+
     if (this.state.name) {
       return (
         <div>
@@ -41,35 +50,21 @@ class Home extends Component {
     } else {
       return (
         <div>
-          <div /* style={loginStyle} */>
-            <p>로그인</p>
-            E-MAIL
-            <input ref={ref => (this.emailE = ref)} />
+          <div style={canStyle}>
+            <p>주차장 이용하기</p>
+            차 번호
+            <input ref={ref => (this.numberE = ref)} />
+            <br />차 크기
+            <select ref={ref => (this.sizeE = ref)}>
+              <option value="small">경차</option>
+              <option value="medium">중형차</option>
+              <option value="big">대형차</option>
+            </select>
             <br />
-            Password
-            <input type="password" ref={ref => (this.pwE = ref)} />
-            <br />
-            <button onClick={this.login}>Login</button>
-            <button>Join</button>
-            <p>회원가입</p>
-            이름
-            <input ref={ref => (this.nameE = ref)} />
-            <br />
-            이메일
-            <input ref={ref => (this.emailE_Contact = ref)} />
-            <br />
-            비밀번호
-            <input ref={ref => (this.pwE_Contact = ref)} />
-            <br />
-            comments
-            <input ref={ref => (this.commentsE = ref)} />
-            <br />
-            <button onClick={this.memberInsert}>회원가입</button>
+            <button onClick={this.memberInsert}>이용하기</button>
           </div>
-          <div /* style={logoutStyle} */>
-            {" "}
-            {/* {login_nick} */}님 환영합니다
-            <button onClick={this.logout}>Logout</button>
+          <div style={cantStyle}>
+            <h1>현재 남아있는 주차장이 없습니다.</h1>
           </div>
         </div>
       );
