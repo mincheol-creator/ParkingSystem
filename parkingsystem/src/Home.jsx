@@ -32,7 +32,7 @@ class Home extends Component {
             })
             .then(returnData => {
               if (returnData.data.message) {
-                alert("Update OK");
+                alert(changenumber + "번 주차장 사용합니다.");
               } else {
                 alert("오류");
               }

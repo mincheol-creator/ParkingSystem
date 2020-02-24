@@ -32,7 +32,8 @@ router.post("/update", async (req, res, next) => {
       {
         carnumber: carnumber,
         size: size,
-        use: 1
+        use: 1,
+        updated_at: Date.now()
       },
       {
         where: { id: spacenumber }
@@ -40,6 +41,17 @@ router.post("/update", async (req, res, next) => {
     );
     console.log(carnumber);
     res.json({ message: carnumber });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+});
+
+router.post("/findall", async (req, res, next) => {
+  try {
+    const result = await User.findAll({});
+    console.log(result);
+    res.json({ message: result });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
