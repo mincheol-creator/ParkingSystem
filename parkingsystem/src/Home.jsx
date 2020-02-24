@@ -5,7 +5,7 @@ const headers = { withCredentials: true };
 
 class Home extends Component {
   state = {
-    login_nick: "",
+    number: "",
     canStyle: "inline-block",
     cantStyle: "none"
   };
@@ -17,16 +17,30 @@ class Home extends Component {
       size: this.sizeE.value
     };
     axios
-      .post("http://localhost:8080/member/insert", send_param)
+      .post("http://localhost:8080/member/find", send_param)
       .then(returnData => {
         if (returnData.data.message) {
           this.setState({
             number: returnData.data.message
           });
+          console.log(returnData.data.message);
+          const changenumber = returnData.data.message;
+          axios
+            .post("http://localhost:8080/member/update", {
+              send_param,
+              changenumber
+            })
+            .then(returnData => {
+              if (returnData.data.message) {
+                alert("Update OK");
+              } else {
+                alert("오류");
+              }
+            });
         } else {
           alert("오류");
         }
-        console.log(returnData.data.message);
+        //console.log(returnData.data.message);
       })
       .catch(err => {
         console.log(err);

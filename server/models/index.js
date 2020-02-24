@@ -15,9 +15,6 @@ let sequelize = new Sequelize(
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-db.Space = require("./space")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
-
-db.User.belongsTo(db.Space);
 
 module.exports = db;
