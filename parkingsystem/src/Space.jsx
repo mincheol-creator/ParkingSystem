@@ -11,9 +11,10 @@ class Space extends Component {
   };
 
   goOut = () => {
-    const send_param = {
+    alert();
+    /*   const send_param = {
       headers,
-      number: this.parkingnumber.value
+      number: parkingnumber
     };
     axios
       .post("http://localhost:8080/member/out", send_param)
@@ -27,7 +28,7 @@ class Space extends Component {
       })
       .catch(err => {
         console.log(err);
-      });
+      }); */
   };
 
   ////////////////////////////////////////////////////////////////////////
@@ -40,8 +41,8 @@ class Space extends Component {
       .then(returnData => {
         if (returnData.data.message) {
           const carNumbers = returnData.data.message;
-          const carNumberList = carNumbers.map(item => (
-            <td>
+          const carNumberList = carNumbers.map((item, i) => (
+            <td key={i}>
               주차장 번호 : {item.parkingnumber}
               <br />차 번호 : {item.carnumber}
               <br />차 크기 : {item.size}
