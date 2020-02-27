@@ -6,7 +6,6 @@ const headers = { withCredentials: true };
 class Space extends Component {
   state = {
     resultCarNumber: []
-    //resultFee:""
   };
 
   goOut = parkingnumber => {
@@ -27,24 +26,28 @@ class Space extends Component {
               returnData.data.sendfee +
               "원 입니다."
           );
-          // const fee = returnData.data.sendfee;
-
-          /*           this.setState({
-            resultFee : fee
-          }); */
+          const fee = returnData.data.sendfee;
+          ////////////////////////////////////////////////
+          axios
+            .post("http://localhost:8080/member/feeupdate", {
+              fee
+            })
+            .then(returnData => {
+              if (returnData.data.message) {
+                console.log(returnData.data.message);
+              } else {
+                alert("오류");
+              }
+            });
+          ////////////////////////////////////////////////
         } else {
           alert("오류");
         }
-        //console.log(returnData.data.message);
       })
       .catch(err => {
         console.log(err);
       });
   };
-
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
 
   parkinglot = () => {
     axios

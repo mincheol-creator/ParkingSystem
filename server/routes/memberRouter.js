@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
 const User = require("../models").User;
+const Fee = require("../models").Fee;
 
 router.post("/find", async (req, res, next) => {
   const carnumber = req.body.number;
@@ -106,11 +107,11 @@ router.post("/out", async (req, res, next) => {
     const usetime = Math.ceil((exittimeaa - entertimeaa) / 60000);
     var fee = 0;
     if (exitcarsizeaa == "small") {
-      fee = Number(usetime) * 1000;
+      fee = Number(usetime) * 100;
     } else if (exitcarsizeaa == "medium") {
-      fee = Number(usetime) * 2000;
+      fee = Number(usetime) * 200;
     } else if (exitcarsizeaa == "big") {
-      fee = Number(usetime) * 3000;
+      fee = Number(usetime) * 300;
     }
     console.log(usetime);
     console.log(fee);
@@ -125,11 +126,50 @@ router.post("/out", async (req, res, next) => {
     res.json({ message: false });
   }
 });
-
-router.get("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.json({ message: true });
-  });
+/////////////////////////////////////////////////////////////////
+router.post("/feeupdate", async (req, res, next) => {
+  const updatefee = req.body.fee;
+  console.log(updatefee);
+  ///////////////////
+  try {
+    const result = await Fee.findOne({});
+    var totalfee = result.currentfee;
+    console.log(totalfee);
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+  console.log(typeof updatefee);
+  console.log(typeof totalfee);
+  var resultfee = totalfee + updatefee;
+  //////////////
+  console.log(typeof resultfee);
+  try {
+    const result = await Fee.update(
+      {
+        currentfee: resultfee
+      },
+      {
+        where: { id: 1 }
+      }
+    );
+    res.json({ message: resultfee });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
 });
+
+router.post("/checkcheck", async (req, res, next) => {
+  try {
+    const result = await Fee.findOne({});
+    res.json({ message: result.currentfee });
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+});
+
+/////////////////////////////////////////////////////////////////
 
 module.exports = router;
