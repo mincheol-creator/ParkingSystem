@@ -6,20 +6,32 @@ const headers = { withCredentials: true };
 class Space extends Component {
   state = {
     resultCarNumber: []
+    //resultFee:""
   };
 
-  goOut = (parkingnumber, updated_at) => {
+  goOut = parkingnumber => {
     const send_param = {
       headers,
-      number: parkingnumber,
-      starttime: updated_at
+      number: parkingnumber
     };
     axios
       .post("http://localhost:8080/member/out", send_param)
       .then(returnData => {
-        if (returnData.data.message) {
-          console.log(returnData.data.message);
-          alert("이용을 종료하셧습니다.");
+        if (returnData.data.sendnumber) {
+          console.log(returnData.data.sendnumber);
+          alert(
+            returnData.data.sendnumber +
+              "님 " +
+              returnData.data.sendtime +
+              "분 이용하셨습니다. 요금은 " +
+              returnData.data.sendfee +
+              "원 입니다."
+          );
+          // const fee = returnData.data.sendfee;
+
+          /*           this.setState({
+            resultFee : fee
+          }); */
         } else {
           alert("오류");
         }
@@ -50,13 +62,7 @@ class Space extends Component {
                   <br />
                   입고 시간 : {item.updated_at}
                   <br />
-                  <button
-                    onClick={this.goOut.bind(
-                      null,
-                      item.parkingnumber,
-                      item.updated_at
-                    )}
-                  >
+                  <button onClick={this.goOut.bind(null, item.parkingnumber)}>
                     종료
                   </button>
                 </td>

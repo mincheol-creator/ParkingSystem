@@ -61,9 +61,24 @@ router.post("/findall", async (req, res, next) => {
 
 router.post("/out", async (req, res, next) => {
   const number = req.body.number;
-  const starttime = req.body.starttime;
   console.log(number);
-  console.log(starttime);
+  ////////////////////////////////////////////////////
+  try {
+    const result = await User.findOne({
+      where: {
+        parkingnumber: number
+      }
+    });
+    var entertime = result.updated_at;
+    var exitcarnumber = result.carnumber;
+    var exitcarsize = result.size;
+  } catch (err) {
+    console.log(err);
+    res.json({ message: false });
+  }
+  var entertimeaa = entertime;
+  var exitcarnumberaa = exitcarnumber;
+  var exitcarsizeaa = exitcarsize;
   try {
     const result = await User.update(
       {
@@ -76,14 +91,35 @@ router.post("/out", async (req, res, next) => {
         where: { parkingnumber: number }
       }
     );
-    /* console.log(result);
-    console.log(result.updated_at); */
-    //const timeend = Number(Date.now());
-    //const timestart = Number(starttime);
-    //const timerr = Date.now() - starttime;
-    //console.log(Date.now());
-    //console.log(timestart);
-    res.json({ message: number });
+    try {
+      const result = await User.findOne({
+        where: {
+          parkingnumber: number
+        }
+      });
+      var exittime = result.updated_at;
+    } catch (err) {
+      console.log(err);
+      res.json({ message: false });
+    }
+    var exittimeaa = exittime;
+    const usetime = Math.ceil((exittimeaa - entertimeaa) / 60000);
+    var fee = 0;
+    if (exitcarsizeaa == "small") {
+      fee = Number(usetime) * 1000;
+    } else if (exitcarsizeaa == "medium") {
+      fee = Number(usetime) * 2000;
+    } else if (exitcarsizeaa == "big") {
+      fee = Number(usetime) * 3000;
+    }
+    console.log(usetime);
+    console.log(fee);
+    res.json({
+      sendtime: usetime,
+      sendsize: exitcarsizeaa,
+      sendnumber: exitcarnumberaa,
+      sendfee: fee
+    });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
