@@ -39,6 +39,7 @@ router.post("/update", async (req, res, next) => {
         where: { id: spacenumber }
       }
     );
+
     console.log(carnumber);
     res.json({ message: carnumber });
   } catch (err) {
@@ -50,7 +51,7 @@ router.post("/update", async (req, res, next) => {
 router.post("/findall", async (req, res, next) => {
   try {
     const result = await User.findAll({});
-    console.log(result);
+    //console.log(result);
     res.json({ message: result });
   } catch (err) {
     console.log(err);
@@ -59,26 +60,34 @@ router.post("/findall", async (req, res, next) => {
 });
 
 router.post("/out", async (req, res, next) => {
-  const parkingnumber = req.body.number;
+  const number = req.body.number;
+  const starttime = req.body.starttime;
   console.log(number);
-  /*  try {
+  console.log(starttime);
+  try {
     const result = await User.update(
       {
-        carnumber: carnumber,
-        size: size,
-        use: 1,
+        carnumber: null,
+        size: "",
+        use: 0,
         updated_at: Date.now()
       },
       {
-        where: { id: spacenumber }
+        where: { parkingnumber: number }
       }
     );
-    console.log(carnumber);
-    res.json({ message: carnumber });
+    /* console.log(result);
+    console.log(result.updated_at); */
+    //const timeend = Number(Date.now());
+    //const timestart = Number(starttime);
+    //const timerr = Date.now() - starttime;
+    //console.log(Date.now());
+    //console.log(timestart);
+    res.json({ message: number });
   } catch (err) {
     console.log(err);
     res.json({ message: false });
-  } */
+  }
 });
 
 router.get("/logout", (req, res) => {
