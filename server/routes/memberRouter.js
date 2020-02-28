@@ -5,16 +5,16 @@ const User = require("../models").User;
 const Fee = require("../models").Fee;
 
 router.post("/find", async (req, res, next) => {
-  const carnumber = req.body.number;
-  const size = req.body.size;
+  //사용 가능한 주차장을 찾음
   try {
     const result = await User.findOne({
+      //1개만 조회
       where: {
-        use: 0
+        use: 0 //사용여부가 0인 조건하에 1개를 조회한다.
       }
     });
     console.log(result.parkingnumber);
-    res.json({ message: result.parkingnumber });
+    res.json({ message: result.parkingnumber }); //조회된 데이터의 parkingnumber를 전송
   } catch (err) {
     console.log(err);
     res.json({ message: false });
