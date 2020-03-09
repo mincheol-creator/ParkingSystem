@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 axios.defaults.withCredentials = true;
 const headers = { withCredentials: true };
 
@@ -51,7 +53,9 @@ class Home extends Component {
           <option value="big">대형차</option>
         </select>
         <br />
-        <button onClick={this.memberInsert}>이용하기</button>
+        <Button variant="secondary" onClick={this.memberInsert}>
+          이용하기
+        </Button>
       </div>
     );
   }

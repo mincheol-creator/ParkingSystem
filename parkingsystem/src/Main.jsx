@@ -3,6 +3,7 @@ import Home from "./Home";
 import Space from "./Space";
 import Fee from "./Fee";
 import { Route, NavLink, HashRouter } from "react-router-dom";
+import { Image } from "react-bootstrap";
 
 class Main extends Component {
   render() {
@@ -11,6 +12,7 @@ class Main extends Component {
         <HashRouter>
           <div>
             <h1>Parking System</h1>
+            <Image src="./image/background.jpg" fluid />
             <ul className="header">
               <li>
                 <NavLink exact to="/">
